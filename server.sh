@@ -1,0 +1,13 @@
+#!/bin/bash
+#Stop the background process
+sudo /etc/init.d/bluetooth stop
+# Turn on Bluetooth
+sudo hciconfig hcio up
+# Update  mac address
+./updateMac.sh
+#Update Name
+# ./updateName.sh
+sudo /usr/sbin/bluetoothd --nodetach --debug -p time &
+sudo python server/btk_server.py
+
+

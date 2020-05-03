@@ -5,7 +5,7 @@ sudo hciconfig hcio up
 # Update  mac address
 ./updateMac.sh
 #Update Name
-./updateName.sh ThanhLe_Keyboard
+./updateName.sh
 #Get current Path
 export C_PATH=$(pwd)
 #Create Tmux session

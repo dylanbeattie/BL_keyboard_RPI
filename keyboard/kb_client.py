@@ -90,9 +90,12 @@ class Keyboard():
 
     #poll for keyboard events
     def event_loop(self):
+        print("DYLAN: this bit works!")
         for event in self.dev.read_loop():
+            print("DYLAN: event from self.dev.read_loop()")
             #only bother if we hit a key and its an up or down event
             if event.type==ecodes.EV_KEY and event.value < 2:
+                print ("DYLAN: send_input()")
                 self.change_state(event)
                 self.send_input()
 
@@ -102,6 +105,8 @@ class Keyboard():
         element=self.state[2]
         for bit in element:
             bin_str += str(bit)
+
+        print ("DYLAN: self.iface.send_keys: bin_str = " + bin_str)
 
         self.iface.send_keys(int(bin_str,2),self.state[4:10])
 

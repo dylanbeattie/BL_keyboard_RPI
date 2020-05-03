@@ -71,7 +71,7 @@ class BTKbBluezProfile(dbus.service.Object):
 class BTKbDevice():
 	#change these constants
 	MY_ADDRESS="B8:27:EB:B9:FE:EC"
-	MY_DEV_NAME="ThanhLe_Keyboard"
+	MY_DEV_NAME="dylan-pi-keyboard-2"
 
 	#define some constants
 	P_CTRL =17  #Service port - must match port configured in SDP record
@@ -87,11 +87,15 @@ class BTKbDevice():
 
 	#configure the bluetooth hardware device
 	def init_bt_device(self):
+		os.system("/etc/init.d/bluetooth stop")
 		print("Configuring for name "+BTKbDevice.MY_DEV_NAME)
 		#set the device class to a keybord and set the name
 		os.system("hciconfig hci0 up")
 		os.system("hciconfig hcio class 0x002540")
 		os.system("hciconfig hcio name " + BTKbDevice.MY_DEV_NAME)
+		# disable Bluetooth security
+		# os.system("hciconfig hcio noauth")
+
 		#make the device discoverable
 		os.system("hciconfig hcio piscan")
 
@@ -111,7 +115,7 @@ class BTKbDevice():
 		#retrieve a proxy for the bluez profile interface
 		bus = dbus.SystemBus()
 		manager = dbus.Interface(bus.get_object("org.bluez","/org/bluez"), "org.bluez.ProfileManager1")
-		profile = BTKbBluezProfile(bus, BTKbDevice.PROFILE_DBUS_PATH)
+		# profile = BTKbBluezProfile(bus, BTKbDevice.PROFILE_DBUS_PATH)
 		manager.RegisterProfile(BTKbDevice.PROFILE_DBUS_PATH, BTKbDevice.UUID,opts)
 		print("Profile registered ")
 
@@ -150,7 +154,7 @@ class BTKbDevice():
 	#send a string to the bluetooth host machine
 	def send_string(self,message):
 
-	     print("Sending " + message)
+	 #    print("Sending "+message)
 		 self.cinterrupt.send(message)
 
 
@@ -165,8 +169,8 @@ class  BTKbService(dbus.service.Object):
 		print("Setting up service")
 
 		#set up as a dbus service
-		bus_name=dbus.service.BusName("org.yaptb.btkbservice",bus=dbus.SystemBus())
-		dbus.service.Object.__init__(self,bus_name,"/org/yaptb/btkbservice")
+		# bus_name=dbus.service.BusName("org.yaptb.btkbservice",bus=dbus.SystemBus())
+		# dbus.service.Object.__init__(self,bus_name,"/org/yaptb/btkbservice")
 
 		#create and setup our device
 		self.device= BTKbDevice()
@@ -174,7 +178,7 @@ class  BTKbService(dbus.service.Object):
 		#start listening for connections
 		self.device.listen()
 
-	@dbus.service.method('org.yaptb.btkbservice', in_signature='yay')
+	# @dbus.service.method('org.yaptb.btkbservice', in_signature='yay')
 	def send_keys(self,modifier_byte,keys):
 
 		cmd_str=""
@@ -188,17 +192,15 @@ class  BTKbService(dbus.service.Object):
 			if(count<6):
 				cmd_str+=chr(key_code)
 			count+=1
-		
-		print ("self.device.send_string(" + cmd_str + ")")
 
 		self.device.send_string(cmd_str)
 
 #main routine
 if __name__ == "__main__":
 	# we an only run as root
-	if not os.geteuid() == 0:
-	   sys.exit("Only root can run this script")
+	# if not os.geteuid() == 0:
+	#    sys.exit("Only root can run this script")
 
-	DBusGMainLoop(set_as_default=True)
+	# DBusGMainLoop(set_as_default=True)
 	myservice = BTKbService()
-	gtk.main()
+	# gtk.main()

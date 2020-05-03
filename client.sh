@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo python keyboard/kb_client.py
+sudo python keyboard/pi_keys.py
 
 
 

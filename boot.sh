@@ -5,7 +5,7 @@ sudo hciconfig hcio up
 # Update  mac address
 ./updateMac.sh
 #Update Name
-./updateName.sh
+# ./updateName.sh
 #Get current Path
 export C_PATH=$(pwd)
 #Create Tmux session
@@ -20,3 +20,6 @@ if [ $? != 0 ] ; then
     tmux send-keys -t thanhle:os.2 'cd $C_PATH && sudo /usr/bin/bluetoothctl' C-m
     tmux send-keys -t thanhle:os.3 'cd $C_PATH/keyboard/ && sleep 5 && sudo python kb_client.py' C-m
 fi
+
+
+

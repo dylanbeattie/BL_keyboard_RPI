@@ -70,8 +70,8 @@ class BTKbBluezProfile(dbus.service.Object):
 #
 class BTKbDevice():
 	#change these constants
-	MY_ADDRESS="B8:27:EB:B9:FE:EC"
-	MY_DEV_NAME="ThanhLe_Keyboard"
+	MY_ADDRESS="DC:A6:32:8B:8E:07"
+	MY_DEV_NAME="dylan-pi-4b"
 
 	#define some constants
 	P_CTRL =17  #Service port - must match port configured in SDP record
@@ -150,7 +150,7 @@ class BTKbDevice():
 	#send a string to the bluetooth host machine
 	def send_string(self,message):
 
-	     print("Sending " + message)
+	 #    print("Sending "+message)
 		 self.cinterrupt.send(message)
 
 

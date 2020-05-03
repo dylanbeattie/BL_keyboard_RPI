@@ -102,7 +102,7 @@ class Keyboard():
     #forward keyboard events to the dbus service
     def send_input(self):
         bin_str=""
-        element=self.state[2]
+        element=self.state[2] 
         for bit in element:
             bin_str += str(bit)
 
